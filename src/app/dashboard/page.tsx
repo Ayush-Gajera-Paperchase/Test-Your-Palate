@@ -17,11 +17,13 @@ function WordCycler() {
     return () => clearInterval(interval);
   }, []);
 
+  // WordCycler.jsx
   return (
-    <span className="text-[#FF6D2F] font-bold transition-all duration-300 inline-block min-w-[140px]">
+    <span className="text-[#FF6D2F] font-bold transition-all duration-300">
       {PAYS_WORDS[index]}
     </span>
   );
+
 }
 
 export default function DashboardPage() {
@@ -137,29 +139,33 @@ export default function DashboardPage() {
 
       {/* Top Header */}
       <header className="w-full py-6 z-10 flex justify-center bg-[#18003a]/80 backdrop-blur-sm border-b border-white/5">
-        <h1 className="text-5xl md:text-6xl font-bold tracking-tight lowercase">
-          paperchase
+        <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
+          Paperchase
         </h1>
       </header>
 
       {/* Main Content */}
-      <div className="w-full max-w-7xl flex-1 flex flex-col md:flex-row items-stretch justify-center gap-6 p-6 md:p-12 z-10 mt-4 md:mt-12">
+      <div className="w-full max-w-7xl  flex-1 flex flex-col md:flex-row items-stretch justify-center gap-6 p-6 md:p-12 z-10 mt-4 md:mt-12">
 
         {/* Left Card - Stats */}
-        <div className="flex-1 rounded-3xl p-8 md:p-12 flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#23044a] to-[#13002b] border border-white/5">
+        <div className="flex-1 rounded-3xl pd-[80px]  p-8 md:p-12 pb-30  flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#23044a] to-[#13002b] border border-white/5">
+
           <p className="text-xs md:text-sm font-semibold tracking-[0.3em] text-white/50 mb-4 uppercase">
             ROUND {round.id}
           </p>
           <h2 className="text-4xl md:text-6xl font-black uppercase tracking-wider mb-6">
             {round.restaurant}
           </h2>
-          <p className="text-lg md:text-2xl text-white/80 max-w-sm mx-auto leading-relaxed mb-12">
+          <p className="text-lg md:text-2xl text-white/80 max-w-sm  leading-relaxed mb-12">
             {round.stat}
           </p>
-          <p className="text-xl md:text-3xl font-medium mt-auto">
-            Paperchase <WordCycler /><br />
-            every pence
+
+          <p className="text-xl md:text-3xl lg:text-4xl font-medium mt-auto mb-auto text-center flex flex-wrap justify-center gap-x-2">
+            <span>Paperchase</span>
+            <WordCycler />
+            <span>every pence</span>
           </p>
+
         </div>
 
         {/* Right Card - Palate & Count */}

@@ -39,34 +39,43 @@ export interface Database {
       submissions: {
         Row: {
           id: string;
-          full_name: string;
+          first_name: string;
+          last_name: string;
+          title: string | null;
           work_email: string;
           phone_number: string;
           company_name: string;
           flavor_guess: string;
           follow_up_permission: boolean;
+          round: string;
           is_winner: boolean;
           submitted_at: string;
         };
         Insert: {
           id?: string;
-          full_name: string;
+          first_name: string;
+          last_name: string;
+          title?: string | null;
           work_email: string;
           phone_number: string;
           company_name: string;
           flavor_guess: string;
           follow_up_permission: boolean;
+          round?: string;
           is_winner?: boolean;
           submitted_at?: string;
         };
         Update: {
           id?: string;
-          full_name?: string;
+          first_name?: string;
+          last_name?: string;
+          title?: string | null;
           work_email?: string;
           phone_number?: string;
           company_name?: string;
           flavor_guess?: string;
           follow_up_permission?: boolean;
+          round?: string;
           is_winner?: boolean;
           submitted_at?: string;
         };

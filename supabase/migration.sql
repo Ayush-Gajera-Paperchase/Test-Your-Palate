@@ -25,7 +25,9 @@ VALUES ('Dishoom', 150, 1);
 -- 2. Submissions Table
 CREATE TABLE IF NOT EXISTS submissions (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  full_name TEXT NOT NULL,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  title TEXT,
   work_email TEXT NOT NULL UNIQUE,
   phone_number TEXT NOT NULL,
   company_name TEXT NOT NULL,

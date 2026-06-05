@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { DashboardConfig, Submission, Winner } from '@/types/database';
+import { getRoundConfig, ROUNDS } from '@/config/rounds';
 
 const ADMIN_KEY = 'typ_admin_auth';
 const ITEMS_PER_PAGE = 10;
@@ -108,6 +109,9 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [totalCount, setTotalCount] = useState(0);
+  const [matchType, setMatchType] = useState<'all' | 'correct'>('all');
+  const [correctAnswers, setCorrectAnswers] = useState<Submission[]>([]);
+  const [correctCount, setCorrectCount] = useState(0);
 
   // Action states
   const [winnerLoading, setWinnerLoading] = useState<string | null>(null);
@@ -137,23 +141,32 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     const from = (page - 1) * ITEMS_PER_PAGE;
     const to = from + ITEMS_PER_PAGE - 1;
 
+    const currentRound = config?.current_round || 1;
+    const roundConfig = getRoundConfig(currentRound);
+
     let query = supabase
       .from('submissions')
       .select('*', { count: 'exact' })
-      .order('submitted_at', { ascending: false })
-      .range(from, to);
+      .eq('round', roundConfig.restaurant)
+      .order('submitted_at', { ascending: false });
+
+    if (matchType === 'correct') {
+      query = query.eq('flavor_guess', roundConfig.mysteryIngredient);
+    }
 
     if (search.trim()) {
       query = query.or(
-        `full_name.ilike.%${search}%,work_email.ilike.%${search}%,company_name.ilike.%${search}%`
+        `first_name.ilike.%${search}%,last_name.ilike.%${search}%,work_email.ilike.%${search}%,company_name.ilike.%${search}%`
       );
     }
+
+    query = query.range(from, to);
 
     const { data, count } = await query;
 
     if (data) setSubmissions(data);
     if (count !== null) setTotalCount(count);
-  }, [page, search]);
+  }, [page, search, matchType, config]);
 
   useEffect(() => {
     fetchData();
@@ -219,7 +232,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
     // Insert winner
     await supabase.from('winners').insert({
       submission_id: submission.id,
-      winner_name: submission.full_name,
+      winner_name: `${submission.title ? submission.title + ' ' : ''}${submission.first_name} ${submission.last_name}`,
     });
 
     // Refresh
@@ -430,34 +443,66 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                   />
                 </svg>
-                Submissions ({totalCount})
+                {matchType === 'correct' ? '✓ Correct Answers' : 'All Submissions'} ({totalCount})
               </h2>
 
-              {/* Search */}
-              <div className="relative max-w-xs w-full">
-                <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          {/* Search */}
+              <div className="flex flex-col gap-3 w-full">
+                <div className="relative w-full">
+                  <svg
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    type="text"
+                    className="input-field pl-9 text-sm w-full"
+                    placeholder="Search name, email, company..."
+                    value={search}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                      setPage(1);
+                    }}
                   />
-                </svg>
-                <input
-                  type="text"
-                  className="input-field pl-9 text-sm"
-                  placeholder="Search name, email, company..."
-                  value={search}
-                  onChange={(e) => {
-                    setSearch(e.target.value);
-                    setPage(1);
-                  }}
-                />
+                </div>
+
+                {/* Match Type Filter */}
+                <div className="flex gap-2 flex-wrap">
+                  <button
+                    onClick={() => {
+                      setMatchType('all');
+                      setPage(1);
+                    }}
+                    className={`px-4 py-2 rounded-lg text-xs font-medium transition-all ${
+                      matchType === 'all'
+                        ? 'bg-accent text-white'
+                        : 'bg-white/10 text-text-secondary hover:bg-white/15'
+                    }`}
+                  >
+                    All Submissions
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMatchType('correct');
+                      setPage(1);
+                    }}
+                    className={`px-4 py-2 rounded-lg text-xs font-medium transition-all ${
+                      matchType === 'correct'
+                        ? 'bg-green-500 text-white'
+                        : 'bg-white/10 text-text-secondary hover:bg-white/15'
+                    }`}
+                  >
+                    ✓ Correct Answers
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -472,20 +517,11 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                     <th className="text-left py-3 px-2 text-text-muted uppercase tracking-wider text-xs font-medium">
                       Email
                     </th>
-                    <th className="text-left py-3 px-2 text-text-muted uppercase tracking-wider text-xs font-medium hidden md:table-cell">
-                      Phone
-                    </th>
-                    <th className="text-left py-3 px-2 text-text-muted uppercase tracking-wider text-xs font-medium hidden lg:table-cell">
+                    <th className="text-left py-3 px-2 text-text-muted uppercase tracking-wider text-xs font-medium">
                       Company
                     </th>
                     <th className="text-left py-3 px-2 text-text-muted uppercase tracking-wider text-xs font-medium">
                       Flavor
-                    </th>
-                    <th className="text-left py-3 px-2 text-text-muted uppercase tracking-wider text-xs font-medium hidden lg:table-cell">
-                      Follow Up
-                    </th>
-                    <th className="text-left py-3 px-2 text-text-muted uppercase tracking-wider text-xs font-medium hidden md:table-cell">
-                      Time
                     </th>
                     <th className="text-right py-3 px-2 text-text-muted uppercase tracking-wider text-xs font-medium">
                       Action
@@ -495,7 +531,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                 <tbody>
                   {submissions.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="text-center py-12 text-text-muted">
+                      <td colSpan={5} className="text-center py-12 text-text-muted">
                         {search ? 'No results found.' : 'No submissions yet.'}
                       </td>
                     </tr>
@@ -505,37 +541,19 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                         key={sub.id}
                         className="border-b border-white/5 hover:bg-white/3 transition-colors"
                       >
-                        <td className="py-3 px-2 font-medium">{sub.full_name}</td>
+                        <td className="py-3 px-2 font-medium">
+                          {sub.first_name} {sub.last_name}
+                        </td>
                         <td className="py-3 px-2 text-text-secondary text-xs">
                           {sub.work_email}
                         </td>
-                        <td className="py-3 px-2 text-text-secondary text-xs hidden md:table-cell">
-                          {sub.phone_number}
-                        </td>
-                        <td className="py-3 px-2 text-text-secondary text-xs hidden lg:table-cell">
+                        <td className="py-3 px-2 text-text-secondary text-xs">
                           {sub.company_name}
                         </td>
                         <td className="py-3 px-2">
                           <span className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-accent/15 text-accent border border-accent/25">
                             {sub.flavor_guess}
                           </span>
-                        </td>
-                        <td className="py-3 px-2 hidden lg:table-cell">
-                          <span
-                            className={`text-xs font-medium ${
-                              sub.follow_up_permission ? 'text-success' : 'text-text-muted'
-                            }`}
-                          >
-                            {sub.follow_up_permission ? 'Yes' : 'No'}
-                          </span>
-                        </td>
-                        <td className="py-3 px-2 text-text-muted text-xs hidden md:table-cell">
-                          {new Date(sub.submitted_at).toLocaleString('en-GB', {
-                            day: '2-digit',
-                            month: 'short',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
                         </td>
                         <td className="py-3 px-2 text-right">
                           {sub.is_winner ? (

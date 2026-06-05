@@ -5,6 +5,7 @@ export interface RoundConfig {
   nextRound: string | null;
   previousIngredientTitle: string | null;
   previousIngredient: string | null;
+  mysteryIngredient: string;
   videoSrc: string; // Placeholder for video background path
   logoSrc: string | null; // Placeholder for restaurant logo if any
 }
@@ -17,6 +18,7 @@ export const ROUNDS: RoundConfig[] = [
     nextRound: "Eve Bar",
     previousIngredientTitle: null,
     previousIngredient: null,
+    mysteryIngredient: "Apricot",
     videoSrc: "/videos/dishoom.mov",
     logoSrc: null,
   },
@@ -27,6 +29,7 @@ export const ROUNDS: RoundConfig[] = [
     nextRound: "Lilibet",
     previousIngredientTitle: "DISHOOM SECRET INGREDIENT",
     previousIngredient: "Apricot",
+    mysteryIngredient: "Rhubarb",
     videoSrc: "/videos/eve-bar.mov",
     logoSrc: null,
   },
@@ -36,7 +39,8 @@ export const ROUNDS: RoundConfig[] = [
     stat: "Lilibet uses 20K pounds of sugar every year.", // Placeholder
     nextRound: null,
     previousIngredientTitle: "EVE BAR SECRET INGREDIENT",
-    previousIngredient: "Basil", // Placeholder
+    previousIngredient: "Rhubarb", // Placeholder
+    mysteryIngredient: "Oyster",
     videoSrc: "/videos/lilibet.mov",
     logoSrc: null,
   }
