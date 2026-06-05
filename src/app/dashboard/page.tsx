@@ -137,107 +137,115 @@ export default function DashboardPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#110022] via-[#110022]/60 to-transparent mix-blend-multiply" />
       </div>
 
-      {/* Top Header */}
-      <header className="w-full py-6 z-10 flex justify-center bg-[#18003a]/80 backdrop-blur-sm border-b border-white/5">
-        <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-          Paperchase
+      {/* Top Header - Paperchase Logo with Dark Blue Background */}
+      <header className="w-full flex-shrink-0 z-10 flex justify-center border-b border-white/10 py-[3%] relative bg-gradient-to-r from-[#001a4d] via-[#003399] to-[#001a4d]">
+        <div className="absolute inset-0 bg-[#23044a]/80 to-transparent pointer-events-none"></div>
+        <h1 className="text-[8vw] font-bold tracking-tight lowercase text-white relative z-10">
+          paperchase
         </h1>
       </header>
 
-      {/* Main Content */}
-      <div className="w-full max-w-7xl  flex-1 flex flex-col md:flex-row items-stretch justify-center gap-6 p-6 md:p-12 z-10 mt-4 md:mt-12">
+      {/* Main Content Grid - 2 column layout for 3x3 display */}
+      <div className="flex-1 flex items-center justify-center px-[2%] py-[2%] z-10 w-full overflow-hidden">
+        <div className="w-full h-full grid grid-cols-2 gap-[2%] max-w-full">
 
         {/* Left Card - Stats */}
-        <div className="flex-1 rounded-3xl pd-[80px]  p-8 md:p-12 pb-30  flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#23044a] to-[#13002b] border border-white/5">
+        <div className="rounded-[2vw] p-[3%] flex flex-col items-center justify-center text-center shadow-2xl relative overflow-hidden bg-gradient-to-br from-[#23044a] to-[#13002b] border border-white/10">
 
-          <p className="text-xs md:text-sm font-semibold tracking-[0.3em] text-white/50 mb-4 uppercase">
+          <p className="text-[1.2vw] font-semibold tracking-[0.15em] text-white/60 mb-[2%] uppercase">
             ROUND {round.id}
           </p>
-          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-wider mb-6">
+          <h2 className="text-[4.5vw] font-black uppercase tracking-wider mb-[3%]">
             {round.restaurant}
           </h2>
-          <p className="text-lg md:text-2xl text-white/80 max-w-sm  leading-relaxed mb-12">
+          <p className="text-[1.5vw] text-white/80 leading-tight mb-[4%] font-light">
             {round.stat}
           </p>
 
-          <p className="text-xl md:text-3xl lg:text-4xl font-medium mt-auto mb-auto text-center flex flex-wrap justify-center gap-x-2">
-            <span>Paperchase</span>
+          <p className="text-[2vw] font-semibold text-center flex flex-wrap justify-center gap-x-[1%] mt-auto">
+            <span className="text-white">Paperchase</span>
             <WordCycler />
-            <span>every pence</span>
+            <span className="text-white">every pence</span>
           </p>
 
         </div>
 
         {/* Right Card - Palate & Count */}
-        <div className="flex-1 rounded-3xl p-8 md:p-12 flex flex-col shadow-2xl relative border border-[#FF6D2F]/30  backdrop-blur-md">
+        <div className="rounded-[2vw] p-[3%] flex flex-col shadow-2xl relative border border-[#FF6D2F]/40 backdrop-blur-md bg-black/40 overflow-hidden">
 
-          <div className="text-center mb-8">
-            <h2 className="text-4xl md:text-5xl font-bold mb-3">
+          <div className="mb-[2%] flex-shrink-0">
+            <h2 className="text-[3vw] font-bold mb-[1%]">
               Test Your <span className="text-[#a580e2]">Palate</span>
             </h2>
-            <p className="text-white/80 text-sm md:text-base leading-relaxed">
+            <p className="text-white/80 text-[1.2vw] leading-snug font-light">
               Guess the mystery cocktail ingredient<br />
               for a chance to win<br />
-              <span className="text-[#a580e2] font-semibold">dinner for two at  {round.restaurant}.</span>
+              <span className="text-[#a580e2] font-semibold">dinner for two at {round.restaurant}.</span>
             </p>
           </div>
 
-          <div className="rounded-2xl bg-gradient-to-b from-white/10 to-transparent border border-white/10 p-6 mb-8 flex items-center justify-between shadow-inner">
-            <div className="flex-1 border-r border-white/10 pr-4">
-              <p className="text-[10px] md:text-xs font-semibold tracking-widest text-white/50 mb-2 uppercase">
-                THEORETICAL INVENTORY
+          <div className="rounded-[1.5vw] bg-gradient-to-b from-white/8 to-transparent border border-white/15 p-[2%] mb-[2%] flex items-center justify-between flex-shrink-0">
+            <div className="flex-1 border-r border-white/15 pr-[2%]">
+              <p className="text-[0.9vw] font-semibold tracking-widest text-white/50 mb-[0.5%] uppercase leading-tight">
+                THEORETICAL<br />INVENTORY
               </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#FF6D2F]/20 border border-[#FF6D2F] flex items-center justify-center font-bold text-[#FF6D2F] rounded-md">
-                  StO
-                </div>
-                <span className="font-bold text-sm md:text-base leading-tight">
+              <div className="flex items-center gap-[1%]">
+                <img 
+                  src="/sto-logo.svg" 
+                  alt="StockTake Online" 
+                  className="w-[2.5vw] h-[2.5vw] object-contain flex-shrink-0 rounded-lg"
+                />
+                <span className="font-bold text-[0.95vw] leading-tight">
                   STOCKTAKE<br />ONLINE
                 </span>
               </div>
             </div>
 
-            <div className="flex-1 pl-6 text-center">
-              <p className="text-[10px] md:text-xs font-semibold tracking-widest text-white/50 mb-1 uppercase">
-                COCKTAILS REMAINING
+            <div className="flex-1 pl-[2%] text-center">
+              <p className="text-[0.9vw] font-semibold tracking-widest text-white/50 mb-[0.5%] uppercase leading-tight">
+                COCKTAILS<br />REMAINING
               </p>
-              <p className={`text-5xl md:text-7xl font-bold text-[#a580e2] transition-transform duration-300 ${drinksAnimating ? 'scale-110' : 'scale-100'}`}>
+              <p className={`text-[4vw] font-bold text-[#a580e2] transition-transform duration-300 ${drinksAnimating ? 'scale-110' : 'scale-100'}`}>
                 {config.drinks_remaining}
               </p>
             </div>
           </div>
 
-          <div className="mt-auto text-center space-y-8">
+          <div className="flex-1 flex flex-col space-y-[1%] overflow-hidden">
             {round.nextRound && (
-              <div>
-                <p className="text-[10px] md:text-xs font-semibold tracking-widest text-white/50 mb-1 uppercase">
+              <div className="flex-shrink-0">
+                <p className="text-[0.9vw] font-semibold tracking-widest text-white/50 mb-[0.5%] uppercase leading-tight">
                   NEXT ROUND
                 </p>
-                <p className="text-xl md:text-2xl font-semibold text-[#FF6D2F]">
+                <p className="text-[1.5vw] font-semibold text-[#FF6D2F]">
                   {round.nextRound}
                 </p>
               </div>
             )}
 
             {round.previousIngredientTitle && (
-              <div className="pt-4 border-t border-white/5">
-                <p className="text-[10px] md:text-xs font-semibold tracking-widest text-white/50 mb-1 uppercase">
+              <div className="pt-[1%] border-t border-white/10 flex-shrink-0">
+                <p className="text-[0.9vw] font-semibold tracking-widest text-white/50 mb-[0.5%] uppercase leading-tight">
                   {round.previousIngredientTitle}
                 </p>
-                <p className="text-xl md:text-2xl font-semibold text-[#FF6D2F]">
+                <p className="text-[1.5vw] font-semibold text-[#FF6D2F]">
                   {round.previousIngredient}
                 </p>
               </div>
             )}
 
-            <div className="pt-4 flex justify-center gap-4 text-[#FF6D2F] font-bold tracking-widest text-sm md:text-base uppercase">
+            <div className="pt-[1%] flex justify-center gap-[0.8%] text-[#FF6D2F] font-bold tracking-widest text-[0.95vw] uppercase flex-shrink-0">
               <span>SCAN</span>
+              <span className="text-white/30">•</span>
               <span>SIP</span>
+              <span className="text-white/30">•</span>
               <span>GUESS</span>
+              <span className="text-white/30">•</span>
               <span>WIN</span>
             </div>
           </div>
 
+        </div>
         </div>
       </div>
 
