@@ -302,12 +302,12 @@ export default function PlayPage() {
           </div>
           <div className="md:w-1/3">
             <label className="block text-sm font-medium text-text-secondary mb-2 uppercase tracking-wider">
-              Title <span className="text-white/30 text-[10px]">(Optional)</span>
+             Job Title <span className="text-white/30 text-[10px]">(Optional)</span>
             </label>
             <input
               type="text"
               className="input-field"
-              placeholder="e.g. Mr, Dr, etc."
+              placeholder="e.g. Owner, Chef, etc."
               value={form.title}
               onChange={(e) => updateField('title', e.target.value)}
             />
