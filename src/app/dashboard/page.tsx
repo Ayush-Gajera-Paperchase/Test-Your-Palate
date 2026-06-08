@@ -206,7 +206,7 @@ export default function DashboardPage() {
             <div className="w-full rounded-[1.5vw] bg-gradient-to-b from-white/8 to-transparent border border-white/15 px-4 py-4  mb-8 flex items-top justify-between flex-shrink-0">
               <div className="flex-1">
                 <p className="text-[1.2vw] font-semibold tracking-widest text-white/50 mb-4 uppercase leading-tight">
-                  THEORETICAL NVENTORY
+                  THEORETICAL INVENTORY
                 </p>
                 <div className="flex items-center gap-[1%]">
                   <img src="/sto.svg" alt="" className="w-[30vw] h-auto" />
